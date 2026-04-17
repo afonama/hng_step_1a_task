@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To Do Card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <a class="skip-link" href="#taskGrid">Skip to task list</a>
+
+  <!-- Announcements for screen readers -->
+  <div id="liveRegion" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <main class="page-shell" aria-label="Task board">
+
+    <header class="board-header">
+      <div class="board-header__eyebrow">Your workspace</div>
+      <h1 class="board-header__title">Todo Card</h1>
+      <p class="board-header__sub">Stay on top of every deadline.</p>
+    </header>
+
+    <div class="add-task-row">
+      <button class="btn-add-task" id="btnOpenModal" aria-haspopup="dialog" aria-label="Add a new task">
+        <i class="bi bi-plus-lg" aria-hidden="true"></i> New Task
+      </button>
+    </div>
+
+    <section class="task-grid" id="taskGrid" aria-label="Task cards"></section>
+
+    <p class="empty-state" id="emptyState" aria-live="polite" hidden>
+      <i class="bi bi-clipboard2-check" aria-hidden="true"></i><br />
+      No tasks yet, add your first one above.
+    </p>
+
+  </main>
+
+  <!-- ===== CREATE MODAL ===== -->
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+    <div class="modal-box">
+      <header class="modal-box__header">
+        <h2 class="modal-box__title" id="modalTitle">New Task</h2>
+        <button class="modal-close" id="btnCloseModal" aria-label="Close dialog">
+          <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
+      </header>
+      <form class="modal-form" id="taskForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="inputTitle">Task title <span aria-hidden="true">*</span></label>
+          <input class="form-input" type="text" id="inputTitle" name="title"
+            placeholder="e.g. Review patient intake forms" autocomplete="off"
+            aria-required="true" aria-describedby="titleError" />
+          <span class="form-error" id="titleError" role="alert" aria-live="assertive"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inputDesc">Description <span class="form-label--optional">(optional)</span></label>
+          <textarea class="form-input form-input--textarea" id="inputDesc" name="description"
+            rows="3" placeholder="Add notes, context, or details..."
+            aria-describedby="descError"></textarea>
+          <span class="form-error" id="descError" role="alert" aria-live="assertive"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inputDue">Due date <span aria-hidden="true">*</span></label>
+          <input class="form-input" type="date" id="inputDue" name="due"
+            aria-required="true" aria-describedby="dueError" />
+          <span class="form-error" id="dueError" role="alert" aria-live="assertive"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inputPriority">Priority</label>
+          <select class="form-input form-input--select" id="inputPriority" name="priority">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+            <option value="critical">Critical</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inputTags">Tags <span class="form-label--optional">(comma-separated, letters only)</span></label>
+          <input class="form-input" type="text" id="inputTags" name="tags"
+            placeholder="e.g. health, urgent, admin" autocomplete="off"
+            aria-describedby="tagsError" />
+          <span class="form-error" id="tagsError" role="alert" aria-live="assertive"></span>
+        </div>
+        <div class="modal-form__actions">
+          <button type="button" class="btn-secondary" id="btnCancelModal">Cancel</button>
+          <button type="submit" class="btn-primary" id="btnSubmitForm">Create Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== DELETE CONFIRM MODAL ===== -->
+  <div class="modal-backdrop modal-backdrop--danger" id="deleteBackdrop" role="alertdialog"
+    aria-modal="true" aria-labelledby="deleteTitle" aria-describedby="deleteDesc" hidden>
+    <div class="modal-box modal-box--sm">
+      <header class="modal-box__header">
+        <h2 class="modal-box__title" id="deleteTitle">Delete Task?</h2>
+      </header>
+      <p class="delete-desc" id="deleteDesc">
+        This action cannot be undone. The task <strong id="deleteTaskName"></strong> will be permanently removed.
+      </p>
+      <div class="modal-form__actions">
+        <button type="button" class="btn-secondary" id="btnCancelDelete">Keep it</button>
+        <button type="button" class="btn-danger" id="btnConfirmDelete">Yes, delete</button>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+</html>
